@@ -29,35 +29,11 @@ const getOne = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
-  try {
-    await addCar(req.body);
-    return res.status(201).send(req.body); //Success and created resource
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send("Internal Server Error");
-  }
-};
+const create = async (req, res) => {};
 
-const update = async (req, res) => {
-  try {
-    await updateCar(req.params.id, req.body);
-    return res.status(204).send(""); //Success but no entity-body - updating existing car
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send("Internal Server Error");
-  }
-};
+const update = async (req, res) => {};
 
-const remove = async (req, res) => {
-  try {
-    await removeCar(req.params.id);
-    return res.status(204).send("");
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send("Internal Server Error");
-  }
-};
+const remove = async (req, res) => {};
 
 module.exports = {
   getAll,

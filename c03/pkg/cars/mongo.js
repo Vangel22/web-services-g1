@@ -10,35 +10,19 @@ const carSchema = new mongoose.Schema({
 
 const Car = mongoose.model("cars", carSchema);
 
-const addCar = async (car) => {
-  try {
-    const newCar = new Car(car);
-    return await newCar.save();
-    //ObjectId => unique id
-  } catch (err) {
-    throw err;
-  }
-};
+const addCar = async (car) => {};
 
 //remove car
-const removeCar = async (id) => {
-  return await Car.deleteOne({ _id: id });
-};
+const removeCar = async (id) => {};
 
 //update car
-const updateCar = async (id, car) => {
-  return await Car.updateOne({ _id: id, car });
-};
+const updateCar = async (id, car) => {};
 
 //get all cars
-const getAllCars = async () => {
-  return await Car.find({});
-};
+const getAllCars = async () => {};
 
 //get one car
-const getOneCar = async (id) => {
-  return await Car.findOne({ _id: id });
-};
+const getOneCar = async (id) => {};
 
 module.exports = {
   addCar,
