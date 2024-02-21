@@ -3,13 +3,22 @@ const express = require("express");
 require("dotenv").config();
 require("./pkg/db");
 
-const { getAll, getOne, create, update, remove } = require("./handlers/cars");
+const {
+  getAll,
+  getOne,
+  create,
+  update,
+  remove,
+  getCarsLocal,
+} = require("./handlers/cars");
 
 const api = express();
 
 api.use(express.json());
 
 api.get("/api/cars", getAll);
+
+api.get("/api/local/cars", getCarsLocal);
 
 api.get("/api/cars/:id", getOne);
 

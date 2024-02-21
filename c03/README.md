@@ -12,3 +12,7 @@
 // Statefull
 /dokument/1 -> Soobrakajna i e na staro ime, ja popolnuvame originalnata
 /dokument/2 -> Ja popolnuvame novata soobrakajna so naseto Ime i prezime
+
+### Task
+
+    - Променете ја рутата add и delete да работат со локалниот фајл data.json
