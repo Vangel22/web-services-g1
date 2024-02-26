@@ -8,26 +8,34 @@ const accountSchema = mongoose.Schema({
 
 const Account = mongoose.model("Account", accountSchema, "accounts");
 
-// create an account - POST
-const create = async () => {};
+const create = async (acc) => {
+  const account = new Account(acc);
+  return await account.save();
+};
 
-// get a user by id - GET
-const getById = async () => {};
+const getById = async (id) => {
+  return await Account.findOne({ _id: id });
+};
 
-// get user by email - GET
-const getByEmail = async () => {};
+const getByEmail = async (email) => {
+  return await Account.findOne({ email });
+};
 
-// set new password - PUT
-const setNewPassword = async () => {};
+const setNewPassword = async (id, password) => {
+  return await Account.updateOne({ _id: id }, password);
+};
 
-// get all accounts - GET
-const getAll = async () => {};
+const getAll = async () => {
+  return await Account.find({});
+};
 
-// update a user - PUT
-const update = async () => {};
+const update = async (id, acc) => {
+  return await Account.updateOne({ _id: id }, acc);
+};
 
-// delete a user - DELETE
-const remove = async () => {};
+const remove = async (id) => {
+  return await Account.deleteOne({ _id: id });
+};
 
 module.exports = {
   create,
