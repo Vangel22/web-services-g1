@@ -21,7 +21,7 @@ const getSingle = async (user_id, id) => {
   return await Posts.find({ _id: id, user_id });
 };
 
-const getAllAlphabetically = async () => {};
+const getAllAlphabetically = async (user_id) => {};
 
 const create = async (data) => {
   const post = new Posts(data);
