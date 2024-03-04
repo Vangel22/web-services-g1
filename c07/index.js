@@ -7,6 +7,7 @@ const {
   refreshToken,
   resetPassword,
 } = require("./handlers/auth");
+const { getAllPosts, createPost } = require("./handlers/post");
 
 require("./pkg/db");
 
@@ -35,6 +36,9 @@ app.get("/api/auth/refresh-token", refreshToken);
 app.post("/api/auth/register", register);
 app.post("/api/auth/reset-password", resetPassword);
 // moze da bide i put
+
+app.get("/api/blog", getAllPosts);
+app.post("/api/blog", createPost);
 
 // server startup
 app.listen(getSection("development").port, () => {
