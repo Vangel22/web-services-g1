@@ -1,13 +1,14 @@
 const express = require("express");
 const { expressjwt: jwt } = require("express-jwt");
 const { getSection } = require("./pkg/config");
+const fileUpload = require("express-fileupload");
 const {
   login,
   register,
   refreshToken,
   resetPassword,
 } = require("./handlers/auth");
-const { getAllPosts, createPost } = require("./handlers/post");
+const { upload, download } = require("./handlers/storage");
 
 require("./pkg/db");
 
@@ -29,12 +30,24 @@ app.use(
     ],
   })
 );
+app.use(fileUpload());
+// api.use(fileUpload({
+//   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+// }));
 
-// routes -  GET, POST, PUT, PATCH, DELETE
+// Auth routes
 app.post("/api/auth/login", login);
 app.get("/api/auth/refresh-token", refreshToken);
 app.post("/api/auth/register", register);
 app.post("/api/auth/reset-password", resetPassword);
+
+// Storage routes
+app.post("/api/storage", upload);
+app.get("/api/storage/:filename", download);
+
+// Homework
+// app.delete("/api/storage/:filename", removeFile);
+// app.get("/api/list", listFilesForUser)
 
 // server startup
 app.listen(getSection("development").port, () => {

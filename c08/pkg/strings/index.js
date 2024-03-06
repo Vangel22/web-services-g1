@@ -20,3 +20,4 @@ const makeId = (length) => {
 // 1 * 50
 // characters.charAt(2) => B
 // characters.charAt(4) => D
+module.exports = makeId;
