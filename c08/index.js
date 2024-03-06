@@ -30,7 +30,9 @@ app.use(
     ],
   })
 );
+
 app.use(fileUpload());
+
 // api.use(fileUpload({
 //   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
 // }));
