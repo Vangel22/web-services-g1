@@ -1,0 +1,8 @@
+Iskoristete kesiranje kaj Rick and Morty:
+- API: https://rickandmortyapi.com/documentation/#rest
+
+*Bonus
+Link for homework bonus: https://openweathermap.org/api/one-call-api
+Daily: https://openweathermap.org/forecast16
+
+
