@@ -9,6 +9,8 @@ const getForCity = async (req, res) => {
   }
 };
 
+const getForCityHourly = async (req, res) => {};
+
 module.exports = {
   getForCity,
 };
