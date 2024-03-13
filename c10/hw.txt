@@ -1,0 +1,2 @@
+- Istrazete gi slicnite softveri kako Mailgun
+- Prednosti i nedostatoci

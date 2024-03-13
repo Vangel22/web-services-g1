@@ -21,24 +21,19 @@ const { getSection } = require("../config");
 const sendMessage = () => {
   const mg = mailgun.client({
     username: "api",
-    key:
-      getSection("development").api_key ||
-      "key-08845b24f1f301c0858e3817a184507e",
+    key: getSection("development").api_key || "",
   });
 
   //   console.log("mg", mg);
 
-  const test = mg.messages.create(
-    "sandbox6a27711605204b26a87436754162784d.mailgun.org",
-    {
-      from: "h.vangel22@gmail.com",
-      to: "h.vangel22@gmail.com",
-      // to: ["test@mail.com", "testtwo@mail.com"]
-      subject: "Hello World",
-      text: "Testing Mailgun",
-      //   html: "<h1>Testing HTML</h1>",
-    }
-  );
+  const test = mg.messages.create("", {
+    from: "your@gmail.com",
+    to: "your@gmail.com",
+    // to: ["test@mail.com", "testtwo@mail.com"]
+    subject: "Hello World",
+    text: "Testing Mailgun",
+    //   html: "<h1>Testing HTML</h1>",
+  });
 
   return test;
 };
