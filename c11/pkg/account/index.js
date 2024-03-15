@@ -14,7 +14,7 @@ const create = async (acc) => {
 };
 
 const setNewPassword = async (id, password) => {
-  return await Account.updateOne({ _id: id }, password);
+  return await Account.updateOne({ _id: id }, { password });
 };
 
 const getById = async (id) => {

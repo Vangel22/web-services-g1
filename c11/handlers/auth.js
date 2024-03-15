@@ -18,6 +18,7 @@ const login = async (req, res) => {
         error: "Acount not found!",
       };
     }
+
     if (!bcrypt.compareSync(req.body.password, acc.password)) {
       throw {
         code: 400,
@@ -30,7 +31,7 @@ const login = async (req, res) => {
       id: acc._id,
       exp: new Date().getTime() / 1000 + 7 * 24 * 60 * 60,
     };
-    const token = jwt.sign(payload, config.get("development").jwt_key);
+    const token = jwt.sign(payload, config.getSection("development").jwt_key);
     return res.status(200).send({ token });
   } catch (err) {
     console.log(err);
@@ -62,19 +63,100 @@ const refreshToken = async (req, res) => {
     ...req.auth,
     exp: new Date().getTime() / 1000 + 7 * 24 * 60 * 60,
   };
-  const token = jwt.sign(payload, config.get("development").jwt_key);
+  const token = jwt.sign(payload, config.getSection("development").jwt_key);
   return res.send({ token });
 };
 
 const forgotPassword = async (req, res) => {
-  console.log("req.body", req.body);
+  const { email } = req.body;
+
+  const user = await account.getByEmail(email);
+
+  if (!user) {
+    return res.status(400).send("User not registered!");
+  }
+
+  // header, payload, signature
+
+  const secret = config.getSection("development").jwt_key + user.password;
+  const payload = {
+    email: user.email,
+    id: user.id,
+  };
+
+  const token = jwt.sign(payload, secret, { expiresIn: "15m" });
+  // /reset-password/:id/:token
+  const link = `http://localhost:10000/reset-password/${user.id}/${token}`;
+  console.log("link", link);
+
+  try {
+    await sendMail(user.email, "PASSWORD_RESET", { user, link });
+    return res
+      .status(200)
+      .send("Password reset link has been sent to your email...");
+  } catch (err) {
+    return res.status(500).send("Message not sent!");
+  }
 };
 
-//this is new
-const resetPassTemplate = async (req, res) => {};
+// View -> GET request
+const resetPassTemplate = async (req, res) => {
+  // `http://localhost:10000/reset-password/${user.id}/${token}`;
+  const { id, token } = req.params;
 
-//this is new
-const resetPassword = async (req, res) => {};
+  const user = await account.getById(id);
+
+  if (!user) {
+    return res.status(400).send("User not registered!");
+  }
+
+  const secret = config.getSection("development").jwt_key + user.password;
+
+  try {
+    const payload = jwt.verify(token, secret);
+    if (!payload) {
+      res.send("Token not valid!");
+    }
+    res.render("reset-password", { email: user.email });
+  } catch (err) {
+    return res.status(500).send("Message not sent!");
+  }
+};
+
+// POST request
+const resetPassword = async (req, res) => {
+  // `http://localhost:10000/reset-password/${user.id}/${token}`;
+  // http://localhost:10000/reset-password/65df92c9c03b58dc90ee9a4e/
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAc2Vtb3MuY29tIiwiaWQiOiI2NWRmOTJjOWMwM2I1OGRjOTBlZTlhNGUiLCJpYXQiOjE3MTA1MzUxNjAsImV4cCI6MTcxMDUzNjA2MH0.wS4ZDavxlB9yhOC5Efm_-yHOM74hupsw4Ps9vFpvIAw
+  const { id, token } = req.params;
+  const { password, confirmPass } = req.body;
+
+  if (password !== confirmPass) {
+    return res.status(400).send("Passwords do not match!");
+  }
+
+  const hashedPass = bcrypt.hashSync(password);
+
+  const user = await account.getById(id);
+
+  if (!user) {
+    return res.status(400).send("User not registered!");
+  }
+
+  const secret = config.getSection("development").jwt_key + user.password;
+
+  try {
+    const payload = jwt.verify(token, secret);
+    if (!payload) {
+      res.send("Token not valid!");
+    }
+
+    await account.setNewPassword(user.id, hashedPass);
+    res.status(200).send("Password reset successful!");
+  } catch (err) {
+    return res.status(500).send("Message not sent!");
+  }
+};
 
 module.exports = {
   login,
