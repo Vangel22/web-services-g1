@@ -10,6 +10,10 @@ const makeId = (length) => {
     // Math.random ni dava broj
   }
 
+  // charAt -> go zema indeksot na karakterot od characters
+  // Math.random * charLenght  -> zema broj od 0 do 62 spored dolzinata na stringot characters. Pr. 0.2 * 62 = 12.4
+  // Math.floor -> ke go zema 12 namesto 13. Ako bese Math.ceil ke go zemese 13
+
   return result;
 };
 
